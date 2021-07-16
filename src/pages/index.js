@@ -2,17 +2,28 @@ import styled from 'styled-components'
 
 import { Main } from '../components/Main'
 import { Container } from '../components/Container'
-import { AlurakutMenu, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
+import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
+import { useState } from 'react'
 
 function ProfileSidebar({ githubUser }) {
 	return (
-		<Container>
+		<Container as="aside">
 			<img
 				src={`https://github.com/${githubUser}.png`}
 				alt="profile photo"
 				style={{ borderRadius: '8px' }}
 			/>
+			<hr />
+
+			<p>
+				<a href={`https://github.com/${githubUser}`} className="containerLink">
+					@{githubUser}
+				</a>
+			</p>
+			<hr />
+
+			<AlurakutProfileSidebarMenuDefault />
 		</Container>
 	)
 }
@@ -20,10 +31,27 @@ function ProfileSidebar({ githubUser }) {
 export default function Home() {
 	const githubUser = 'gustavonikov'
 	const favoritesPersons = ['diego3g', 'omariosouto', 'peas', 'juunegreiros', 'rafaballerini', 'maykbrito']
+	const [communities, setCommunities] = useState([{
+		title: 'Eu odeio acordar cedo',
+		image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
+	}])
+
+
+	function handleCreateCommunity(ev) {
+		ev.preventDefault()
+		const formData = new FormData(ev.target)
+
+		const community = {
+			title: formData.get('title'),
+			image: formData.get('image')
+		}
+
+		setCommunities([...communities, community])
+	}
 
 	return (
 		<>
-			<AlurakutMenu />
+			<AlurakutMenu githubUser={githubUser} />
 			<Main>
 				<div className="profile" style={{ gridArea: 'profile' }}>
 					<ProfileSidebar githubUser={githubUser} />
@@ -36,6 +64,32 @@ export default function Home() {
 
 						<OrkutNostalgicIconSet />
 					</Container>
+
+					<Container>
+						<h2 className="subTitle">O que você deseja fazer?</h2>
+						<form onSubmit={handleCreateCommunity}>
+							<div>
+								<input
+									type="text"
+									placeholder="Qual vai ser o nome da sua comunidade?"
+									name="title"
+									aria-label="Qual vai ser o nome da sua comunidade?"
+								/>
+							</div>
+							<div>
+								<input
+									type="text"
+									placeholder="Coloque uma URL para usarmos de capa"
+									name="image"
+									aria-label="Coloque uma URL para usarmos de capa"
+								/>
+							</div>
+
+							<button>
+								Criar comunidade
+							</button>
+						</form>
+					</Container>
 				</div>
 				<div className="profile-relations" style={{ gridArea: 'profileRelations' }}>
 					<ProfileRelationsBoxWrapper>
@@ -45,8 +99,8 @@ export default function Home() {
 						<ul>
 							{
 								favoritesPersons.map((person) => (
-									<li>
-										<a href={`/users/${person}`} key={person}>
+									<li key={person}>
+										<a href={`https://github.com/${person}`}>
 											<img src={`https://github.com/${person}.png`} alt="profile photo" />
 											<span>{person}</span>
 										</a>
@@ -55,9 +109,22 @@ export default function Home() {
 							}
 						</ul>
 					</ProfileRelationsBoxWrapper>
-					<Container>
-						Comunidades
-					</Container>
+					<ProfileRelationsBoxWrapper>
+						<h2 className="smallTitle">Comunidades ({communities.length})</h2>
+						
+						<ul>
+							{
+								communities.map((community, index) => (
+									<li key={index}>
+										<a href={`/users/${community.title}`}>
+											<img src={community.image} alt="community photo" />
+											<span>{community.title}</span>
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</ProfileRelationsBoxWrapper>
 				</div>
 			</Main>
 		</>
