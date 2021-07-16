@@ -56,6 +56,7 @@ export function AlurakutMenu({ githubUser }) {
 AlurakutMenu.Wrapper = styled.header`
   width: 100%;
   background-color: #308BC5;
+
   .alurakutMenuProfileSidebar {
 	background: white;
 	position: fixed;
@@ -69,23 +70,28 @@ AlurakutMenu.Wrapper = styled.header`
 	pointer-events: ${({ isMenuOpen }) => isMenuOpen ? 'all' : 'none'};
 	opacity: ${({ isMenuOpen }) => isMenuOpen ? '1' : '0'};
 	transform: ${({ isMenuOpen }) => isMenuOpen ? 'translateY(0)' : 'translateY(calc(-100% - 48px))'};
+	
 	@media(min-width: 860px) {
 	  display: none;
 	}
+
 	> div {
 	  max-width: 400px;
 	  margin: auto;
 	}
+
 	a {
 	  font-size: 18px;
 	}
-	.boxLink {
+
+	.containerLink {
 	  font-size: 18px;
 	  color: #2E7BB4;
 	  -webkit-text-decoration: none;
 	  text-decoration: none;
 	  font-weight: 800;
 	}
+	
 	hr {
 	  margin-top: 12px;
 	  margin-bottom: 8px;
@@ -170,8 +176,9 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
 			<div>
 				<img src={`https://github.com/${githubUser}.png`} style={{ borderRadius: '8px' }} />
 				<hr />
+
 				<p>
-					<a className="boxLink" href={`/user/${githubUser}`}>
+					<a className="containerLink" href={`/user/${githubUser}`}>
 						@{githubUser}
 					</a>
 				</p>
