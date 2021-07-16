@@ -7,7 +7,7 @@ export const Container = styled.div`
     padding: 16px;
     margin-bottom: 10px;
 
-    .boxLink {
+    .containerLink {
         font-size: 14px;
         color: #2E7BB4;
         text-decoration: none;
