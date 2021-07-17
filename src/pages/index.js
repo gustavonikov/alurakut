@@ -4,7 +4,7 @@ import { Main } from '../components/Main'
 import { Container } from '../components/Container'
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function ProfileSidebar({ githubUser }) {
 	return (
@@ -35,6 +35,7 @@ export default function Home() {
 		title: 'Eu odeio acordar cedo',
 		image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
 	}])
+	const [followers, setFollowers] = useState([])
 
 
 	function handleCreateCommunity(ev) {
@@ -48,6 +49,12 @@ export default function Home() {
 
 		setCommunities([...communities, community])
 	}
+
+	useEffect(() => {
+		fetch('https://api.github.com/users/gustavonikov/followers')
+		.then((res) => res.json())
+		.then((data) => setFollowers(data))
+	}, [])
 
 	return (
 		<>
