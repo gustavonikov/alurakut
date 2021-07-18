@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import nookies from 'nookies'
+import jwt from 'jsonwebtoken'
 import { Main } from '../components/Main'
 import { Container } from '../components/Container'
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
@@ -26,8 +28,8 @@ function ProfileSidebar({ githubUser }) {
 	)
 }
 
-export default function Home() {
-	const githubUser = 'gustavonikov'
+export default function Home(props) {
+	const githubUser = props.githubUser
 	const favoritesPersons = ['diego3g', 'omariosouto', 'peas', 'juunegreiros', 'rafaballerini', 'maykbrito']
 	const [communities, setCommunities] = useState([])
 	const [followers, setFollowers] = useState([])
@@ -55,7 +57,7 @@ export default function Home() {
 				document.querySelector('#community-form').reset()
 			})
 			.catch((error) => alert('Ocorreu um erro ao cadastrar a comunidade.'))
-		
+
 	}
 
 	useEffect(() => {
@@ -167,4 +169,33 @@ export default function Home() {
 			</Main>
 		</>
 	)
+}
+
+export async function getServerSideProps(ctx) {
+	const cookies = nookies.get(ctx)
+	const token = cookies.USER_TOKEN
+
+	const { isAuthenticated } = await fetch('https://alurakut.vercel.app/api/auth', {
+		headers: {
+			Authorization: token
+		}
+	})
+		.then((res) => res.json())
+
+	if (!isAuthenticated) {
+		return {
+			redirect: {
+				destination: '/login',
+				permanent: false,
+			}
+		}
+	}
+
+	const { githubUser } = jwt.decode(token)
+
+	return {
+		props: {
+			githubUser
+		},
+	}
 }
