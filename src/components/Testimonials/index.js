@@ -4,15 +4,17 @@ import { Container } from '../Container';
 export const TestimonialsWrapper = styled(Container)`
     ul {
         width: 100%;
-		max-height: 500px;
+		max-height: 800px;
 		list-style: none;
-        gap: 10px;
 
         margin-bottom: 20px;
         
         li {
             display: flex;
-            padding: 10px 0px;
+            padding: 8px;
+            margin-bottom: 10px;
+            background-color: #F4F4F4;
+            border-radius: 10px;
 
             img {
                 object-fit: cover;
