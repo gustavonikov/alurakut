@@ -99,6 +99,7 @@ AlurakutMenu.Wrapper = styled.header`
 	  border-bottom-color: #ECF2FA;
 	}
   }
+
   .container {
 	background-color: #308BC5;
 	padding: 7px 16px;
@@ -108,9 +109,11 @@ AlurakutMenu.Wrapper = styled.header`
 	justify-content: space-between;
 	position: relative;
 	z-index: 101;
+
 	@media(min-width: 860px) {
 	  justify-content: flex-start;
 	}
+
 	button {
 	  border: 0;
 	  background: transparent;
@@ -120,17 +123,21 @@ AlurakutMenu.Wrapper = styled.header`
 		display: none;
 	  }
 	}
+
 	nav {
 	  display: none;
+
 	  @media(min-width: 860px) {
 		display: flex;
 	  }
+
 	  a {
 		font-size: 12px;
 		color: white;
 		padding: 10px 16px;
 		position: relative;
 		text-decoration: none;
+
 		&:after {
 		  content: " ";
 		  background-color: #5292C1;
@@ -145,6 +152,7 @@ AlurakutMenu.Wrapper = styled.header`
 		}
 	  }
 	}
+
 	input {
 	  color: #ffffff;
 	  background: #5579A1;
@@ -201,7 +209,7 @@ export function AlurakutProfileSidebarMenuDefault() {
 					<img src={`${BASE_URL}/icons/user.svg`} />
 					Perfil
 				</a>
-				<a href="/">
+				<a href="/scraps">
 					<img src={`${BASE_URL}/icons/book.svg`} />
 					Recados
 				</a>
@@ -220,30 +228,27 @@ export function AlurakutProfileSidebarMenuDefault() {
 					<img src={`${BASE_URL}/icons/plus.svg`} />
 					GitHub Trends
 				</a>
-				<a href="/logout">
-					<img src={`${BASE_URL}//icons/logout.svg`} />
-					Sair
-				</a>
 			</nav>
 		</AlurakutProfileSidebarMenuDefault.Wrapper>
 	)
 }
 
 AlurakutProfileSidebarMenuDefault.Wrapper = styled.div`
-  a {
-	font-size: 12px;
-	color: #2E7BB4;
-	margin-bottom: 16px;
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	text-decoration: none;
-	img {
-	  width: 16px;
-	  height: 16px;
-	  margin-right: 5px; 
+	a {
+		font-size: 12px;
+		color: #2E7BB4;
+		margin-bottom: 16px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		text-decoration: none;
+
+		img {
+			width: 16px;
+			height: 16px;
+			margin-right: 5px; 
+		}
 	}
-  }
 `;
 
 // ================================================================================================================
