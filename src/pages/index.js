@@ -208,7 +208,7 @@ export async function getServerSideProps(ctx) {
 	const communityData = await fetch('https://graphql.datocms.com/', {
 		method: 'POST',
 		headers: {
-			Authorization: '7731eee24ca4682655f836d80575de',
+			Authorization: process.env.READ_ONLY_TOKEN,
 			'Content-Type': 'application/json',
 			Accept: 'application/json'
 		},
@@ -229,7 +229,7 @@ export async function getServerSideProps(ctx) {
 	const testimonialsData = await fetch('https://graphql.datocms.com/', {
 		method: 'POST',
 		headers: {
-			Authorization: '7731eee24ca4682655f836d80575de',
+			Authorization: process.env.READ_ONLY_TOKEN,
 			'Content-Type': 'application/json',
 			Accept: 'application/json'
 		},
