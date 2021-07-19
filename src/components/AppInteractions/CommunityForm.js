@@ -1,13 +1,4 @@
-import styled from 'styled-components'
-
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-
-    button[type='submit'] {
-        align-self: center;
-    }
-`
+import Form from "./Form";
 
 export default function CommunityForm({ handleSubmit }) {
     return (
@@ -17,7 +8,7 @@ export default function CommunityForm({ handleSubmit }) {
                     required
                     type="text"
                     placeholder="Qual vai ser o nome da sua comunidade?"
-                    name="title"
+                    name="community-title"
                     aria-label="Qual vai ser o nome da sua comunidade?"
                 />
             </div>
@@ -26,7 +17,7 @@ export default function CommunityForm({ handleSubmit }) {
                     required
                     type="text"
                     placeholder="Coloque uma URL para usarmos de capa"
-                    name="image"
+                    name="community-image"
                     aria-label="Coloque uma URL para usarmos de capa"
                 />
             </div>
