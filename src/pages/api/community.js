@@ -10,7 +10,6 @@ export default async function requestsReceptor(req, res) {
         })
 
         res.json({
-            data: 'some data',
             communityRecord
         })
 
