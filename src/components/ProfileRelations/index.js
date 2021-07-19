@@ -4,7 +4,7 @@ import { Container } from '../Container';
 export const ProfileRelationsBoxWrapper = styled(Container)`
 	ul {
 		display: grid;
-		grid-gap: 8px;
+		grid-gap: 10px;
 		grid-template-columns: 1fr 1fr 1fr; 
 		max-height: 360px;
 		list-style: none;
