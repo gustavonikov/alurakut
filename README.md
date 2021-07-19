@@ -36,7 +36,7 @@ That must have the following fields:
 
 When you finish, you now have to set the environment variables with the Tokens from DatoCMS.
 The env_example file contains the names, you just have to replace the 'YOUR_TOKEN' with your token from DatoCMS.
-The tokens can be found on Api Tokens on the Sidebar of DatoCMS.
+The tokens can be found on Api Tokens at the Sidebar of DatoCMS.
 
 <br>
 
