@@ -56,10 +56,16 @@ export const Container = styled.div`
     }
     
     button {
-    border: 0;
-    padding: 8px 12px;
-    color: #FFFFFF;
-    border-radius: 10000px;
-    background-color: #6F92BB;
+        border: 0;
+        padding: 8px 12px;
+        border-radius: 8px;
+        
+        &[type="submit"] {
+            color: #FFFFFF;
+            background-color: #6F92BB;
+            font-weight: 700;
+
+            align-self: center;
+        }
     }
 `

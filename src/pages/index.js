@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import nookies from 'nookies'
 import jwt from 'jsonwebtoken'
+
+import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 import { Main } from '../components/Main'
 import { Container } from '../components/Container'
-import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
+import AppInteractions from '../components/AppInteractions'
 
 function ProfileSidebar({ githubUser }) {
 	return (
@@ -30,10 +32,7 @@ function ProfileSidebar({ githubUser }) {
 
 export default function Home(props) {
 	const githubUser = props.githubUser
-	const favoritesPersons = ['diego3g', 'omariosouto', 'peas', 'juunegreiros', 'rafaballerini', 'maykbrito']
 	const [communities, setCommunities] = useState([])
-	const [followers, setFollowers] = useState([])
-
 
 	function handleCreateCommunity(ev) {
 		ev.preventDefault()
@@ -56,15 +55,9 @@ export default function Home(props) {
 				alert('Criado com sucesso')
 				document.querySelector('#community-form').reset()
 			})
-			.catch((error) => alert('Ocorreu um erro ao cadastrar a comunidade.'))
+			.catch((error) => alert(`Ocorreu um erro ao cadastrar a comunidade: ${error.name}`))
 
 	}
-
-	useEffect(() => {
-		fetch('https://api.github.com/users/gustavonikov/followers')
-			.then((res) => res.json())
-			.then((data) => { setFollowers(data) })
-	}, [])
 
 	useEffect(() => {
 		fetch('https://graphql.datocms.com/', {
@@ -106,38 +99,17 @@ export default function Home(props) {
 
 					<Container>
 						<h2 className="subTitle">O que você deseja fazer?</h2>
-						<form id="community-form" onSubmit={handleCreateCommunity}>
-							<div>
-								<input
-									type="text"
-									placeholder="Qual vai ser o nome da sua comunidade?"
-									name="title"
-									aria-label="Qual vai ser o nome da sua comunidade?"
-								/>
-							</div>
-							<div>
-								<input
-									type="text"
-									placeholder="Coloque uma URL para usarmos de capa"
-									name="image"
-									aria-label="Coloque uma URL para usarmos de capa"
-								/>
-							</div>
-
-							<button>
-								Criar comunidade
-							</button>
-						</form>
+						<AppInteractions handleCommunitySubmit={handleCreateCommunity} />
 					</Container>
 				</div>
 				<div className="profile-relations" style={{ gridArea: 'profileRelations' }}>
 					<ProfileRelationsBoxWrapper>
 						<h2 className="smallTitle">
-							Meus seguidores ({followers.length})
+							Meus seguidores ({props.followers.length})
 						</h2>
 						<ul>
 							{
-								followers.filter((follower, index) => index < 9)
+								props.followers.filter((follower, index) => index < 9)
 									.map((follower) => (
 										<li key={follower.id}>
 											<a href={`https://github.com/${follower.login}`}>
@@ -147,6 +119,7 @@ export default function Home(props) {
 										</li>
 									))
 							}
+							<span className="seeAll">Ver todos</span>
 						</ul>
 					</ProfileRelationsBoxWrapper>
 					<ProfileRelationsBoxWrapper>
@@ -163,6 +136,8 @@ export default function Home(props) {
 										</li>
 									))
 							}
+
+							<span className="seeAll">Ver todos</span>
 						</ul>
 					</ProfileRelationsBoxWrapper>
 				</div>
@@ -193,9 +168,13 @@ export async function getServerSideProps(ctx) {
 
 	const { githubUser } = jwt.decode(token)
 
+	const followers = await fetch(`https://api.github.com/users/${githubUser}/followers`)
+		.then((res) => res.json())
+
 	return {
 		props: {
-			githubUser
+			githubUser,
+			followers
 		},
 	}
 }
