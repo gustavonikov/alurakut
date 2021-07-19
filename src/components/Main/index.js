@@ -17,10 +17,10 @@ export const Main = styled.main`
     }
 
     @media (min-width: 860px) {
-    max-width: 1110px;
+    max-width: 1123px;
     display: grid;
     grid-template-areas: 
         'profile welcome profileRelations';
-    grid-template-columns: 160px 1fr 312px;
+    grid-template-columns: 160px 1fr 325px;
     }
 `
