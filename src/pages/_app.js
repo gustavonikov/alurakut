@@ -13,6 +13,12 @@ const GlobalStyle = createGlobalStyle`
 		font-family: sans-serif;
 	}
 
+	button, 
+	textarea, 
+	input {
+		font-family: sans-serif;
+	}
+
 	#__next {
 		display: flex;
 		min-height: 100vh;
