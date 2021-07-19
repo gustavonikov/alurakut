@@ -55,7 +55,7 @@ export default function Home(props) {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setCommunities([...communities, data.communityRecord])
+				setCommunities([data.communityRecord, ...communities])
 				alert('Criado com sucesso')
 				document.querySelector('#community-form').reset()
 			})
@@ -84,7 +84,7 @@ export default function Home(props) {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setTestimonials([...testimonials, data.testimonialsRecord])
+				setTestimonials([data.testimonialRecord, ...testimonials])
 				alert('Criado com sucesso')
 				document.querySelector('#testimonials-form').reset()
 			})
