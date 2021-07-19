@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import nookies from 'nookies'
 import jwt from 'jsonwebtoken'
+import format from 'date-fns/format'
+import ptBR from 'date-fns/locale/pt-BR'
 
 import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from '../lib/AlurakutCommons'
 import { Main } from '../components/Main'
 import { Container } from '../components/Container'
 import { ProfileRelationsBoxWrapper } from '../components/ProfileRelations'
 import AppInteractions from '../components/AppInteractions'
+import { TestimonialsWrapper } from '../components/Testimonials'
 
 function ProfileSidebar({ githubUser }) {
 	return (
@@ -32,7 +35,8 @@ function ProfileSidebar({ githubUser }) {
 
 export default function Home(props) {
 	const githubUser = props.githubUser
-	const [communities, setCommunities] = useState([])
+	const [communities, setCommunities] = useState(props.communities)
+	const [testimonials, setTestimonials] = useState(props.testimonials)
 
 	function handleCreateCommunity(ev) {
 		ev.preventDefault()
@@ -44,8 +48,8 @@ export default function Home(props) {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				title: formData.get('title'),
-				imageUrl: formData.get('image'),
+				title: formData.get('community-title'),
+				imageUrl: formData.get('community-image'),
 				slugCreator: githubUser
 			})
 		})
@@ -59,27 +63,34 @@ export default function Home(props) {
 
 	}
 
-	useEffect(() => {
-		fetch('https://graphql.datocms.com/', {
+	function handleCreateTestimonial(ev) {
+		ev.preventDefault()
+		const formData = new FormData(ev.target)
+
+		const testimonialDate = format(new Date(), 'd MMM, yy', {
+			locale: ptBR,
+		})
+
+		fetch('/api/testimonial', {
 			method: 'POST',
 			headers: {
-				Authorization: '7731eee24ca4682655f836d80575de',
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				"query": `query {
-				allCommunities {
-				  id
-				  title
-				  imageUrl
-				  slugCreator
-				}
-			}` })
+				testimonialAuthor: formData.get('testimonial-author'),
+				testimonialText: formData.get('testimonial-text'),
+				testimonialDate
+			})
 		})
 			.then((res) => res.json())
-			.then(({ data }) => { setCommunities(data.allCommunities) })
-	}, [])
+			.then((data) => {
+				setTestimonials([...testimonials, data.testimonialsRecord])
+				alert('Criado com sucesso')
+				document.querySelector('#testimonials-form').reset()
+			})
+			.catch((error) => alert(`Ocorreu um erro ao cadastrar a comunidade: ${error.name}`))
+
+	}
 
 	return (
 		<>
@@ -99,10 +110,32 @@ export default function Home(props) {
 
 					<Container>
 						<h2 className="subTitle">O que você deseja fazer?</h2>
-						<AppInteractions handleCommunitySubmit={handleCreateCommunity} />
+						<AppInteractions handleCommunitySubmit={handleCreateCommunity} handleTestimonialSubmit={handleCreateTestimonial} />
 					</Container>
+
+					<TestimonialsWrapper>
+						<h2 className="subTitle">Depoimentos de {githubUser}</h2>
+						<ul>
+							{
+								testimonials.filter((testimonial, index) => index < 6)
+									.map((testimonial, index) => (
+										<li key={index}>
+											<img src={`https://github.com/${testimonial.testimonialAuthor}.png`} alt="" />
+											<div>
+												<div>
+													<span>{testimonial.testimonialAuthor}</span><small> - {testimonial.testimonialDate}</small>
+												</div>
+												<p>{testimonial.testimonialText}</p>
+											</div>
+										</li>
+									))
+							}
+
+						</ul>
+						<a href="#" className="seeAll">Ver todos</a>
+					</TestimonialsWrapper>
 				</div>
-				<div className="profile-relations" style={{ gridArea: 'profileRelations' }}>
+				<div style={{ gridArea: 'profileRelations' }}>
 					<ProfileRelationsBoxWrapper>
 						<h2 className="smallTitle">
 							Meus seguidores ({props.followers.length})
@@ -119,7 +152,7 @@ export default function Home(props) {
 										</li>
 									))
 							}
-							<span className="seeAll">Ver todos</span>
+							<a href="#" className="seeAll">Ver todos</a>
 						</ul>
 					</ProfileRelationsBoxWrapper>
 					<ProfileRelationsBoxWrapper>
@@ -137,7 +170,7 @@ export default function Home(props) {
 									))
 							}
 
-							<span className="seeAll">Ver todos</span>
+							<a href="#" className="seeAll">Ver todos</a>
 						</ul>
 					</ProfileRelationsBoxWrapper>
 				</div>
@@ -171,10 +204,55 @@ export async function getServerSideProps(ctx) {
 	const followers = await fetch(`https://api.github.com/users/${githubUser}/followers`)
 		.then((res) => res.json())
 
+
+	const communityData = await fetch('https://graphql.datocms.com/', {
+		method: 'POST',
+		headers: {
+			Authorization: '7731eee24ca4682655f836d80575de',
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify({
+			"query": `query {
+				allCommunities {
+					id
+					title
+					imageUrl
+					slugCreator
+				}
+		}` })
+	})
+		.then((res) => res.json())
+
+	const communities = communityData.data.allCommunities
+
+	const testimonialsData = await fetch('https://graphql.datocms.com/', {
+		method: 'POST',
+		headers: {
+			Authorization: '7731eee24ca4682655f836d80575de',
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		},
+		body: JSON.stringify({
+			"query": `query {
+				allTestimonials {
+					id
+					testimonialAuthor
+					testimonialText,
+					testimonialDate
+				}
+		}` })
+	})
+		.then((res) => res.json())
+
+	const testimonials = testimonialsData.data.allTestimonials
+
 	return {
 		props: {
 			githubUser,
-			followers
+			followers,
+			communities,
+			testimonials
 		},
 	}
 }
