@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components'
 import CommunityForm from './CommunityForm'
+import ScrapsForm from './ScrapsForm';
+import TestimonialsForm from './TestimonialsForm';
 
 const AppInteractionsWrapper = styled.div`
     display: flex;
@@ -25,7 +27,7 @@ const AppInteractionsButton = styled.button`
     `}
 `
 
-export default function AppInteractions({ handleCommunitySubmit }) {
+export default function AppInteractions({ handleCommunitySubmit, handleTestimonialSubmit }) {
     const [activeBtn, setActiveBtn] = useState('community')
 
     return (
@@ -48,15 +50,23 @@ export default function AppInteractions({ handleCommunitySubmit }) {
                     Escrever depoimento
                 </AppInteractionsButton>
                 <AppInteractionsButton
-                    id="scrap"
+                    id="scraps"
                     type="button"
-                    onClick={() => { setActiveBtn('scrap') }}
+                    onClick={() => { setActiveBtn('scraps') }}
                     active={activeBtn}
                 >
                     Deixar um scrap
                 </AppInteractionsButton>
             </AppInteractionsWrapper>
-            <CommunityForm handleSubmit={handleCommunitySubmit} />
+            {
+                activeBtn === 'community' && <CommunityForm handleSubmit={handleCommunitySubmit} />
+            } 
+            {
+                activeBtn === 'testimonials' && <TestimonialsForm handleSubmit={handleTestimonialSubmit} />
+            } 
+            {
+                activeBtn === 'scraps' && <ScrapsForm handleSubmit={handleCommunitySubmit} />
+            } 
         </>
     )
 }
