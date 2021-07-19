@@ -4,6 +4,10 @@
 
 App made at Alura's React Imersion #03, it is a remake of the famous Google App 'Orkut', that is very nostalgic and cool :D, check it out!
 
+## Base Project from Alura
+
+[AluraKut](https://github.com/alura-challenges/alurakut)
+
 ## Getting Started
 
 You can use git clone to copy this repository by typing this command on your console:
