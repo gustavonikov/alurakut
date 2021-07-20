@@ -204,7 +204,6 @@ export async function getServerSideProps(ctx) {
 	const followers = await fetch(`https://api.github.com/users/${githubUser}/followers`)
 		.then((res) => res.json())
 
-
 	const communityData = await fetch('https://graphql.datocms.com/', {
 		method: 'POST',
 		headers: {
