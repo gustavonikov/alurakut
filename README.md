@@ -1,84 +1,69 @@
-# Example app with styled-components
+# Alurakut :)
 
-This example features how you use a different styling solution than [styled-jsx](https://github.com/vercel/styled-jsx) that also supports universal styles. That means we can serve the required styles for the first render within the HTML and then load the rest in the client. In this case we are using [styled-components](https://github.com/styled-components/styled-components).
+## Purpose
 
-For this purpose we are extending the `<Document />` and injecting the server side rendered styles into the `<head>`, and also adding the `babel-plugin-styled-components` (which is required for server side rendering). Additionally we set up a global [theme](https://www.styled-components.com/docs/advanced#theming) for styled-components using NextJS custom [`<App>`](https://nextjs.org/docs/advanced-features/custom-app) component.
+App made at Alura's React Imersion #03, it is a remake of the famous Google App 'Orkut', that is very nostalgic and cool :D, check it out!
 
-## Preview
+## Base Project from Alura
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+[AluraKut](https://github.com/alura-challenges/alurakut)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-styled-components)
+## Getting Started
 
-## Deploy your own
+You can use git clone to copy this repository by typing this command on your console:
+`` https://github.com/gustavonikov/alurakut.git ``
+or you can download the zip file and open it in your IDE.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+Then you run ```npm install``` if you have npm installed on your machine or ```yarn add``` if you have yarn,
+to install all the dependencies that are necessarily to run the project.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-styled-components&project-name=with-styled-components&repository-name=with-styled-components)
+### DatoCMS
 
-## How to use
+To use the app, you must create an account on [DatoCMS](https://www.datocms.com/).
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
+After the account has been made, you must then create the following models:
+<br>
+#### Model 1 - Community
+
+That must have the following fields:
+  <li>Title</li>
+  <li>Image URL</li>
+  <li>Slug Creator</li>
+
+#### Model 2 - Testimonial
+
+That must have the following fields:
+  <li>Testimonial Author</li>
+  <li>Testimonial Text</li>
+  <li>Testimonial Date</li>
+<br>
+
+When you finish, you now have to set the environment variables with the Tokens from DatoCMS.
+The env_example file contains the names, you just have to replace the 'YOUR_TOKEN' with your token from DatoCMS.
+The tokens can be found on Api Tokens at the Sidebar of DatoCMS.
+
+<br>
+
+After install the necessarily packages and make the configuration of DatoCMS correctly, run the development server, 
+that by default will open on http://localhost:3000, running the following commands:
+<br>
 
 ```bash
-npx create-next-app --example with-styled-components with-styled-components-app
+npm run dev
 # or
-yarn create next-app --example with-styled-components with-styled-components-app
+yarn dev
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## Main Tools
+<li>ReactJs</li>
+<li>NextJs</li>
+<li>Styled-Components</li>
+<li>DatoCms</li>
+<li>Nookies</li>
+<li>Date-fns</li>
 
-### Try it on CodeSandbox
+<br/>
 
-[Open this example on CodeSandbox](https://codesandbox.io/s/github/vercel/next.js/tree/canary/examples/with-styled-components)
+### Homepage
 
-### Notes
-
-When wrapping a [Link](https://nextjs.org/docs/api-reference/next/link) from `next/link` within a styled-component, the [as](https://styled-components.com/docs/api#as-polymorphic-prop) prop provided by `styled` will collide with the Link's `as` prop and cause styled-components to throw an `Invalid tag` error. To avoid this, you can either use the recommended [forwardedAs](https://styled-components.com/docs/api#forwardedas-prop) prop from styled-components or use a different named prop to pass to a `styled` Link.
-
-<details>
-<summary>Click to expand workaround example</summary>
-<br />
-
-**components/StyledLink.js**
-
-```javascript
-import Link from 'next/link'
-import styled from 'styled-components'
-
-const StyledLink = ({ as, children, className, href }) => (
-  <Link href={href} as={as} passHref>
-    <a className={className}>{children}</a>
-  </Link>
-)
-
-export default styled(StyledLink)`
-  color: #0075e0;
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-
-  &:hover {
-    color: #40a9ff;
-  }
-
-  &:focus {
-    color: #40a9ff;
-    outline: none;
-    border: 0;
-  }
-`
-```
-
-**pages/index.js**
-
-```javascript
-import StyledLink from '../components/StyledLink'
-
-export default () => (
-  <StyledLink href="/post/[pid]" forwardedAs="/post/abc">
-    First post
-  </StyledLink>
-)
-```
-
-</details>
+![homepage](public/alurakut.png)
